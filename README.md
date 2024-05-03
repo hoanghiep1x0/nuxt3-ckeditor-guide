@@ -11,7 +11,6 @@ Create a new component named ckeditor.vue in the components directory of your pr
 components/editor.vue
 
 ```
-
 <template>
     <div id="editor">
     </div>
@@ -25,40 +24,38 @@ const props = defineProps({
 })
 const editorData = computed(() => props.content)
 const emit = defineEmits("change-data");
+
+
 onMounted(() => {
-    if (process.client) {
-        ClassicEditor
-            .create(document.querySelector('#editor'), {
-                // Editor configuration.
-            })
-            .then(editor => {
-                window.editor = editor;
-                editor.setData(editorData.value);
-                // https://ckeditor.com/.../getting-and-setting-data.html...
-                editor.model.document.on('change:data', () => {
-                    emit("change-data", editor.getData())
-                });
-            })
-            .catch((error) => {
-                console.log(error);
-                // const issueUrl = 'https://github.com/ckeditor/ckeditor5/issues';
-                // const message = [
-                // 'Oops, something went wrong!',
-                // `Please, report the following error on ${issueUrl} with the build id "4rwrpk8dm24-805bmyycq64" and the error stack trace:`
-                // ].join('\n');
+
+    ClassicEditor
+        .create(document.querySelector('#editor'), {
+            // Editor configuration
+        })
+        .then(editor => {
+            window.editor = editor;
+            editor.setData(editorData.value);
+            // https://ckeditor.com/.../getting-and-setting-data.html...
+            editor.model.document.on('change:data', () => {
+                emit("change-data", editor.getData())
             });
-    }
+
+            editor.editing.view.change(writer => {
+                writer.setStyle('height', '400px', editor.editing.view.document.getRoot());
+            })
+        })
+        .catch((error) => {
+            console.log(error);
+            // const issueUrl = 'https://github.com/ckeditor/ckeditor5/issues';
+            // const message = [
+            // 'Oops, something went wrong!',
+            // `Please, report the following error on ${issueUrl} with the build id "4rwrpk8dm24-805bmyycq64" and the error stack trace:`
+            // ].join('\n');
+        });
 })
 </script>
 <style scoped>
 @import "~/assets/editor/styles.css";
-
-.ck-editor__main,
-.ck-content {
-    min-height: 480px;
-}
-
-
 </style>
 ```
 
