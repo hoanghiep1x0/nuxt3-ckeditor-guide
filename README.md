@@ -25,12 +25,6 @@ const props = defineProps({
 })
 const editorData = computed(() => props.content)
 const emit = defineEmits("change-data");
-useHead({
-    css: ["/build/style.css"],
-    script: [{
-        "src": "/build/ckeditor.js"
-    }]
-})
 onMounted(() => {
     if (process.client) {
         ClassicEditor
@@ -57,12 +51,39 @@ onMounted(() => {
 })
 </script>
 <style scoped>
+@import "~/assets/editor/styles.css";
+
 .ck-editor__main,
 .ck-content {
     min-height: 480px;
 }
+
+
 </style>
 ```
+
+4. Setting in nuxt.config.ts
+
+   ```
+   app: {
+    head: {
+      title: 'Nuxt starter',
+      htmlAttrs: {
+        lang: 'en'
+      },
+      meta: [
+        { name: 'description', content: 'Edge compatible Nuxt starter' },
+        { name: 'theme-color', content: '#18181B' }
+      ],
+
+      script: [
+        {
+          "src": "/build/ckeditor.js"
+        }
+      ]
+    }
+  },
+   ```
 
 4. Use CKEditor
 Use the ckeditor.vue component in the app header or in any page where you want to use it.
