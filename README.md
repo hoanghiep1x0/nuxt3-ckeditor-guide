@@ -79,8 +79,7 @@ onMounted(() => {
         }
       ]
     }
-  },
-   ```
+  }```
 
 4. Use CKEditor
 Use the ckeditor.vue component in the app header or in any page where you want to use it.
